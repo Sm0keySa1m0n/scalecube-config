@@ -20,9 +20,9 @@
 
   <repositories>
     <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/Sm0keySa1m0n/</url>
+      <id>sm0keysa1m0n-snapshots</id>
+      <name>Sa1m0n's Repository</name>
+      <url>https://maven.tarbits.co.uk/snapshots/</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
