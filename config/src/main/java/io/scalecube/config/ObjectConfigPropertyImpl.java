@@ -22,7 +22,7 @@ class ObjectConfigPropertyImpl<T> extends AbstractConfigProperty<T>
       Map<String, String> bindingMap,
       Class<T> cfgClass,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
 
     super(cfgClass.getName(), cfgClass);
 
@@ -61,10 +61,11 @@ class ObjectConfigPropertyImpl<T> extends AbstractConfigProperty<T>
     return propertyFields;
   }
 
+  @SuppressWarnings("unchecked")
   private PropertyCallback<T> computePropertyCallback(
       Class<T> cfgClass,
       List<ObjectPropertyField> propertyFields,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
 
     PropertyCallback<T> propertyCallback =
         new PropertyCallback<>(
@@ -82,13 +83,13 @@ class ObjectConfigPropertyImpl<T> extends AbstractConfigProperty<T>
       propertyNames.forEach(
           propName -> {
             propertyCallbackMap.putIfAbsent(propName, new ConcurrentHashMap<>());
-            Map<Class, PropertyCallback> callbackMap = propertyCallbackMap.get(propName);
+            Map<Class<?>, PropertyCallback<?>> callbackMap = propertyCallbackMap.get(propName);
             callbackMap.putIfAbsent(propertyClass, propertyCallback);
           });
     }
 
     // noinspection unchecked
-    return propertyCallbackMap
+    return (PropertyCallback<T>) propertyCallbackMap
         .values()
         .stream()
         .filter(callbackMap -> callbackMap.containsKey(propertyClass))

@@ -1,11 +1,12 @@
 package io.scalecube.config;
 
-import io.scalecube.config.source.LoadedConfigProperty;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import io.scalecube.config.source.LoadedConfigProperty;
 
 class MultimapConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<Map<String, List<T>>>
     implements MultimapConfigProperty<T> {
@@ -36,7 +37,7 @@ class MultimapConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<Map<Str
   MultimapConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap,
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap,
       Function<String, T> valueParser) {
     super(
         name,
@@ -56,7 +57,9 @@ class MultimapConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<Map<Str
     return value().orElseThrow(this::newNoSuchElementException);
   }
 
-  private static <T> Class<?> getMapPropertyClass(Function<String, T> valueParser) {
+  @SuppressWarnings("unchecked")
+  private static <T> Class<Map<String, List<T>>> getMapPropertyClass(
+      Function<String, T> valueParser) {
     Class<?> result = null;
     if (ConfigRegistryImpl.STRING_PARSER == valueParser) {
       result = StringMultimap.class;
@@ -73,16 +76,16 @@ class MultimapConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<Map<Str
       throw new IllegalArgumentException(
           "MultimapConfigPropertyImpl: unsupported multimap valueParser " + valueParser);
     }
-    return result;
+    return (Class<Map<String, List<T>>>) result;
   }
 
-  private static class StringMultimap {}
+  private static abstract class StringMultimap implements Map<String, List<String>> {}
 
-  private static class DoubleMultimap {}
+  private static abstract class DoubleMultimap implements Map<String, List<Double>> {}
 
-  private static class LongMultimap {}
+  private static abstract class LongMultimap implements Map<String, List<Long>> {}
 
-  private static class IntMultimap {}
+  private static abstract class IntMultimap implements Map<String, List<Integer>> {}
 
-  private static class DurationMultimap {}
+  private static abstract class DurationMultimap implements Map<String, List<Duration>> {}
 }

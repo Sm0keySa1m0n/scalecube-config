@@ -9,7 +9,7 @@ class BooleanConfigPropertyImpl extends AbstractSimpleConfigProperty<Boolean>
   BooleanConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
     super(name, Boolean.class, propertyMap, propertyCallbackMap, ConfigRegistryImpl.BOOLEAN_PARSER);
   }
 

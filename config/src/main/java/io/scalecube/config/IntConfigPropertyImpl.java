@@ -9,7 +9,7 @@ class IntConfigPropertyImpl extends AbstractSimpleConfigProperty<Integer>
   IntConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
     super(name, Integer.class, propertyMap, propertyCallbackMap, ConfigRegistryImpl.INT_PARSER);
   }
 

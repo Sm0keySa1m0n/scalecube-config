@@ -9,7 +9,7 @@ class StringConfigPropertyImpl extends AbstractSimpleConfigProperty<String>
   StringConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
     super(name, String.class, propertyMap, propertyCallbackMap, ConfigRegistryImpl.STRING_PARSER);
   }
 

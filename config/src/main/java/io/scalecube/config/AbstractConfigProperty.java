@@ -30,7 +30,7 @@ abstract class AbstractConfigProperty<T> {
       "Validation failed on config property: '%s', failed value: %s";
 
   final String name;
-  final Class<?> propertyClass;
+  final Class<T> propertyClass;
   final Collection<Predicate<T>> validators =
       new CopyOnWriteArraySet<>(); // of type Set for a reason
   final Collection<BiConsumer<T, T>> callbacks =
@@ -41,7 +41,7 @@ abstract class AbstractConfigProperty<T> {
   private volatile List<LoadedConfigProperty>
       inputList; // initialized from subclass, reset in callback
 
-  AbstractConfigProperty(String name, Class<?> propertyClass) {
+  AbstractConfigProperty(String name, Class<T> propertyClass) {
     this.name = name;
     this.propertyClass = propertyClass;
   }

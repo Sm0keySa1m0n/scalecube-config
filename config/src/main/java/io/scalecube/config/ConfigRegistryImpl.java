@@ -70,8 +70,7 @@ final class ConfigRegistryImpl implements ConfigRegistry {
 
   private volatile Map<String, LoadedConfigProperty> propertyMap; // being reset on reload
 
-  @SuppressWarnings("rawtypes")
-  private final Map<String, Map<Class, PropertyCallback>> propertyCallbackMap =
+  private final Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap =
       new ConcurrentHashMap<>();
 
   private final LinkedHashMap<ConfigEvent, Object> recentConfigEvents =
@@ -345,7 +344,7 @@ final class ConfigRegistryImpl implements ConfigRegistry {
               info.setHost(settings.getHost());
               return info;
             })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -464,7 +463,7 @@ final class ConfigRegistryImpl implements ConfigRegistry {
     detectedChanges.forEach(input -> recentConfigEvents.put(input, null)); // keep recent changes
 
     reportChanges(
-        detectedChanges.stream().filter(ConfigEvent::isChanged).collect(Collectors.toList()));
+        detectedChanges.stream().filter(ConfigEvent::isChanged).toList());
 
     // re-compute values and invoke callbacks
     detectedChanges.stream()

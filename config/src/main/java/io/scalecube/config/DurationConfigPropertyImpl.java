@@ -10,7 +10,7 @@ class DurationConfigPropertyImpl extends AbstractSimpleConfigProperty<Duration>
   DurationConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
     super(
         name, Duration.class, propertyMap, propertyCallbackMap, ConfigRegistryImpl.DURATION_PARSER);
   }

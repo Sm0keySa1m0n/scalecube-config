@@ -9,7 +9,7 @@ class LongConfigPropertyImpl extends AbstractSimpleConfigProperty<Long>
   LongConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
     super(name, Long.class, propertyMap, propertyCallbackMap, ConfigRegistryImpl.LONG_PARSER);
   }
 

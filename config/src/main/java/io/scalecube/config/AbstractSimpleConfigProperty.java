@@ -18,9 +18,9 @@ class AbstractSimpleConfigProperty<T> extends AbstractConfigProperty<T> implemen
   /** Constructor for non-object config property. */
   AbstractSimpleConfigProperty(
       String name,
-      Class<?> propertyClass,
+      Class<T> propertyClass,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap,
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap,
       Function<String, T> valueParser) {
 
     super(name, propertyClass);
@@ -56,16 +56,17 @@ class AbstractSimpleConfigProperty<T> extends AbstractConfigProperty<T> implemen
     return new NoSuchElementException("Value is null for property '" + name + "'");
   }
 
-  private PropertyCallback computePropertyCallback(
+  @SuppressWarnings("unchecked")
+  private PropertyCallback<T> computePropertyCallback(
       Function<String, T> valueParser,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
 
     PropertyCallback<T> propertyCallback =
         new PropertyCallback<>(list -> list.get(0).valueAsString().map(valueParser).orElse(null));
 
     propertyCallbackMap.putIfAbsent(name, new ConcurrentHashMap<>());
-    Map<Class, PropertyCallback> callbackMap = propertyCallbackMap.get(name);
+    Map<Class<?>, PropertyCallback<?>> callbackMap = propertyCallbackMap.get(name);
     callbackMap.putIfAbsent(propertyClass, propertyCallback);
-    return callbackMap.get(propertyClass);
+    return (PropertyCallback<T>) callbackMap.get(propertyClass);
   }
 }

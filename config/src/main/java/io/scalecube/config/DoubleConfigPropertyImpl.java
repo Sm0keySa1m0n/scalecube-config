@@ -9,7 +9,7 @@ class DoubleConfigPropertyImpl extends AbstractSimpleConfigProperty<Double>
   DoubleConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap) {
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap) {
     super(name, Double.class, propertyMap, propertyCallbackMap, ConfigRegistryImpl.DOUBLE_PARSER);
   }
 

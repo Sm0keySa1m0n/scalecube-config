@@ -25,7 +25,7 @@ class ObjectPropertyParser {
 
     T instance;
     try {
-      instance = cfgClass.newInstance();
+      instance = cfgClass.getConstructor().newInstance();
     } catch (Exception e) {
       throw ThrowableUtil.propagate(e);
     }

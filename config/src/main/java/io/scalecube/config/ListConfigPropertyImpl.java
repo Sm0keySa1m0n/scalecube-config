@@ -17,7 +17,7 @@ class ListConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<List<T>>
   ListConfigPropertyImpl(
       String name,
       Map<String, LoadedConfigProperty> propertyMap,
-      Map<String, Map<Class, PropertyCallback>> propertyCallbackMap,
+      Map<String, Map<Class<?>, PropertyCallback<?>>> propertyCallbackMap,
       Function<String, T> valueParser) {
     super(
         name,
@@ -37,7 +37,8 @@ class ListConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<List<T>>
     return value().orElseThrow(this::newNoSuchElementException);
   }
 
-  private static <T> Class<?> getListPropertyClass(Function<String, T> valueParser) {
+  @SuppressWarnings("unchecked")
+  private static <T> Class<List<T>> getListPropertyClass(Function<String, T> valueParser) {
     Class<?> result = null;
     if (ConfigRegistryImpl.STRING_PARSER == valueParser) {
       result = StringList.class;
@@ -54,16 +55,16 @@ class ListConfigPropertyImpl<T> extends AbstractSimpleConfigProperty<List<T>>
       throw new IllegalArgumentException(
           "ListConfigPropertyImpl: unsupported list valueParser " + valueParser);
     }
-    return result;
+    return (Class<List<T>>) result;
   }
 
-  private static class StringList {}
+  private static abstract class StringList implements List<String> {}
 
-  private static class DoubleList {}
+  private static abstract class DoubleList implements List<Double> {}
 
-  private static class LongList {}
+  private static abstract class LongList implements List<Long> {}
 
-  private static class IntList {}
+  private static abstract class IntList implements List<Integer> {}
 
-  private static class DurationList {}
+  private static abstract class DurationList implements List<Double> {}
 }
